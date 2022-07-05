@@ -1,0 +1,2638 @@
+package dankestdungeon;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.Scanner;
+import java.util.Random;
+
+public class DankestDungeon {
+
+    public static void main(String[] args) {
+        //Scanner Creation
+        Scanner scan = new Scanner(System.in);
+        String sInput = "";
+        int intInput = 0;
+
+        //Variable Creations
+        boolean running = true;
+        boolean mainMenu = true;
+        boolean playerCreation = false;
+        boolean characterBuild = false;
+        boolean easyDungeon = false;
+        boolean mediumDungeon = false;
+        boolean hardDungeon = false;
+        boolean dankestDungeon = false;
+        boolean inTown = false;
+        boolean inForge = false;
+        boolean inShop = false;
+        boolean inTraining = false;
+        boolean inFMC = false;
+        boolean inSaveLady = false;
+        boolean dungeonRoomChoice = false;
+        boolean game = true;
+        boolean fight = false;
+        boolean endGame = false;
+        boolean saveDataDetected = true;
+        String build = "";
+        int cStrength = 0;
+        int cSpeed = 0;
+        int cAcc = 0;
+        int cHealth = 0;
+        int cHP = 0;
+        int gold = 50;
+        int weaponUpgrade = 25;
+        int armorUpgrade = 25;
+        int wUCounter = 0;
+        int aUCounter = 0;
+        int wULevel = 0;
+        int aULevel = 0;
+        int dmg = 0;
+        int shopWeapon = 150;
+        int shopArmor = 150;
+        String completeEasy = "Not Complete";
+        String completeMedium = "Not Complete";
+        String completeHard = "Not Complete";
+        String completeDank = "Too Dank for You";
+
+        //Enemy Creations
+        String easy[] = {"Skeleton", "Zombie", "Crypt Ghoul"};
+        int easyS = 7, easySp = 8, easyAcc = 68, easyH = 24;
+        String medium[] = {"Librarian", "Casual Memer", "Book Worm (Literal)", "Book Worm (Reads a Lot)"};
+        int mediumS = 14, mediumSp = 10, mediumAcc = 72, mediumH = 32;
+        String hard[] = {"Dank Webber", "Hecker", "Hardcore Memer", "Advertisement"};
+        int hardS = 22, hardSp = 12, hardAcc = 84, hardH = 45;
+        String dank[] = {"Dank Memer", "Meme Maker", "Meme Publicist", "Cultured Meme Professional"};
+        int dankS = 32, dankSp = 14, dankAcc = 83, dankH = 69;
+
+        //Boss Creations
+        String easyBoss = "Dank Ghoul";
+        int easyBossS = 14, easyBossSp = 10, easyBossAcc = 66, easyBossH = 32;
+        String mediumBoss = "Dank Librarian";
+        int mediumBossS = 22, mediumBossSp = 12, mediumBossAcc = 72, mediumBossH = 45;
+        String hardBoss = "Dank Hecker";
+        int hardBossS = 32, hardBossSp = 14, hardBossAcc = 83, hardBossH = 69;
+        String dankBoss = "Lord of Dank Memes";
+        int dankBossS = 40, dankBossSp = 18, dankBossAcc = 94, dankBossH = 81;
+
+        System.out.println(">Welcome to the Dankest Dungeon!");
+        System.out.println(">Press enter to continue....");
+        sInput = scan.nextLine();
+
+        //Running
+        RUNNING:
+        while (running) {
+            //Main Menu
+            MAINMENU:
+            while (mainMenu) {
+                System.out.println("----------------------------------------------");
+                System.out.println("1: New Game");
+                System.out.println("2: Continue");
+                System.out.println("3: Quit");
+
+                sInput = scan.nextLine();
+                switch (sInput) {
+                    case "1":
+                        playerCreation = true;
+                        mainMenu = false;
+                        break;
+                    case "2":
+                    try {
+                        BufferedReader br = new BufferedReader(new FileReader("save.txt"));
+
+                        cStrength = Integer.parseInt(br.readLine());
+                        cSpeed = Integer.parseInt(br.readLine());
+                        cAcc = Integer.parseInt(br.readLine());
+                        cHP = Integer.parseInt(br.readLine());
+                        gold = Integer.parseInt(br.readLine());
+                        weaponUpgrade = Integer.parseInt(br.readLine());
+                        armorUpgrade = Integer.parseInt(br.readLine());
+                        wUCounter = Integer.parseInt(br.readLine());
+                        aUCounter = Integer.parseInt(br.readLine());
+                        wULevel = Integer.parseInt(br.readLine());
+                        aULevel = Integer.parseInt(br.readLine());
+                        shopWeapon = Integer.parseInt(br.readLine());
+                        shopArmor = Integer.parseInt(br.readLine());
+                        completeEasy = br.readLine();
+                        completeMedium = br.readLine();
+                        completeHard = br.readLine();
+                        completeDank = br.readLine();
+                        build = br.readLine();
+
+                        br.close();
+                    } catch (Exception e) {
+                    }
+                    
+                    if (cStrength != 0) {
+                        inTown = true;
+                        game = true;
+                        mainMenu = false;
+                    } else {
+                        System.out.println("----------------------------------------------");
+                        System.out.println(">No save data detected");
+                    }
+
+                    continue RUNNING;
+
+                    case "3":
+                        System.out.println("----------------------------------------------");
+                        System.out.println("You baby back bitch");
+                        System.exit(1);
+                        break;
+                    default:
+                        System.out.println("----------------------------------------------");
+                        System.out.println("Invalid option");
+                        break;
+                }
+
+            }
+
+            //Player Creation
+            PLAYERCREATION:
+            while (playerCreation) {
+                System.out.println("----------------------------------------------");
+                System.out.print(">Enter your characater's name: ");
+                String cName = scan.nextLine();
+                System.out.println("----------------------------------------------");
+                System.out.printf(">Is '%s' correct? (Please enter either 1 or 2 as your answer)", cName);
+                System.out.println("\n\t1: Yes");
+                System.out.println("\t2: No");
+                sInput = scan.nextLine();
+                while (!sInput.equals("1") && !sInput.equals("2")) {
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Please enter either 1 or 2 as an answer!");
+                    sInput = scan.nextLine();
+                }
+
+                if (sInput.equals("1")) {
+                    playerCreation = false;
+                    game = true;
+                    characterBuild = true;
+                } else {
+                    continue PLAYERCREATION;
+                }
+            }
+
+            //Game Running
+            GAME:
+            while (game) {
+                CHARACTERBUILD:
+                while (characterBuild) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Please select a class to play: (Please enter 1, 2, 3, or 4 as your answer)");
+                    System.out.println("1: Crusader - Born as a warrior of the light, this hefty boi is ready to take on any dank memes that stand\n"
+                            + "     in his way on his journey to meme glory. DMG: 7-14 SPD: 12 ACC: 68% HP: 24");
+                    System.out.println("");
+                    System.out.println("2: Highwayman - Raised in the deep west with meme-slingers of all kinds, this cowboy is ready to out-meme \n"
+                            + "     anyone at any time. Don't blink, or you may miss it. DMG: 6-12 SPD: 18 ACC: 82% HP: 20");
+                    System.out.println("");
+                    System.out.println("3: Hellion - This frontline mercenary knows no evil she cannot out-meme. Her memes come from the dankest \n"
+                            + "     of meme mines, in the dankest of places. DMG: 12-24 SPD: 8 ACC: 56% HP: 18");
+                    System.out.println("");
+                    System.out.println("4: Vestal - Ah, so you want to be THAT cunt. Fine. Whatever. DMG: 5-10 SPD: 15 ACC: 78% HP: 25");
+                    System.out.println("");
+                    System.out.println("5: Meme Lord - Pick this guy if you want to cheat your way through like a little bitch. DMG: 100 SPD: 100 "
+                            + "ACC: 100 HP: 1000 ");
+                    build = scan.nextLine();
+
+                    switch (build) {
+                        case "1":
+                            cStrength = 14;
+                            cSpeed = 12;
+                            cAcc = 68;
+                            cHealth = 24;
+                            cHP = 24;
+                            break;
+                        case "2":
+                            cStrength = 12;
+                            cSpeed = 18;
+                            cAcc = 82;
+                            cHealth = 20;
+                            cHP = 20;
+                            break;
+                        case "3":
+                            cStrength = 24;
+                            cSpeed = 8;
+                            cAcc = 56;
+                            cHealth = 18;
+                            cHP = 18;
+                            break;
+                        case "4":
+                            cStrength = 10;
+                            cSpeed = 15;
+                            cAcc = 78;
+                            cHealth = 25;
+                            cHP = 25;
+                            break;
+                        case "5":
+                            cStrength = 100;
+                            cSpeed = 100;
+                            cAcc = 100;
+                            cHealth = 1000;
+                            cHP = 1000;
+                            break;
+                        default:
+                            System.out.println(">Please enter one of the values above.");
+                            continue CHARACTERBUILD;
+                    }
+
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Good luck on your quest adventurer....");
+                    System.out.println("----------------------------------------------");
+
+                    gold = 50;
+                    weaponUpgrade = 25;
+                    armorUpgrade = 25;
+                    wUCounter = 0;
+                    aUCounter = 0;
+                    wULevel = 0;
+                    aULevel = 0;
+                    shopWeapon = 150;
+                    shopArmor = 150;
+                    completeEasy = "Not Complete";
+                    completeMedium = "Not Complete";
+                    completeHard = "Not Complete";
+                    completeDank = "Too Dank for You";
+
+                    inTown = true;
+                    characterBuild = false;
+                }
+
+                //Town Area
+                INTOWN:
+                while (inTown) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println(">Welcome to the town. Upgrade your gear at the Forge,buy items in the shop, train for better\n"
+                            + "accuracy and speed at the Training Grounds, rest at the Fountain of Meme Culture and regain health in\n"
+                            + "exchange for 5% accuracy, or enter the Dungeon. \n"
+                            + "Or just leave if you're a little bitch.");
+                    System.out.printf(">You have %d gold\n", gold);
+                    System.out.println("1: Forge");
+                    System.out.println("2: Shop");
+                    System.out.println("3: Training Grounds");
+                    System.out.println("4: Fountain of Meme Culture");
+                    System.out.println("5: Visit the Save Lady");
+                    System.out.println("6: Enter the Dungeon");
+                    System.out.println("7: Leave like a little BITCH");
+                    sInput = scan.nextLine();
+
+                    switch (sInput) {
+                        case "1":
+                            inForge = true;
+                            inTown = false;
+                            break;
+                        case "2":
+                            inShop = true;
+                            inTown = false;
+                            break;
+                        case "3":
+                            inTraining = true;
+                            inTown = false;
+                            break;
+                        case "4":
+                            inFMC = true;
+                            inTown = false;
+                            break;
+                        case "5":
+                            inSaveLady = true;
+                            inTown = false;
+                            break;
+                        case "6":
+                            dungeonRoomChoice = true;
+                            inTown = false;
+                            break;
+                        case "7":
+                            inTown = false;
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println(">HAHA, LITTLE BITCH");
+                            System.out.println("(Thank u for playing dankest dungeon)");
+                            game = false;
+                            mainMenu = true;
+                            break;
+                    }
+                }
+
+                //Forge Area
+                INFORGE:
+                while (inForge) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Welcome to the forge young memester! How can I help ye'?");
+                    System.out.printf(">You have %d gold\n", gold);
+                    System.out.printf(">Weapon Level: %d\n", wUCounter);
+                    System.out.printf(">Armor Level: %d\n", aUCounter);
+                    if (wUCounter == 5) {
+                        System.out.println("Weapon max level! Buy a better weapon in the shop!.");
+                    } else {
+                        System.out.printf("1: Upgrade Weapon (%d)\n", weaponUpgrade);
+                    }
+                    if (aUCounter == 5) {
+                        System.out.println("Armor max level! Buy better armor in the shop!");
+                    } else {
+                        System.out.printf("2: Upgrade Armor (%d)\n", armorUpgrade);
+                    }
+                    System.out.println("3: Return to Town");
+                    sInput = scan.nextLine();
+
+                    switch (sInput) {
+                        case "1":
+                            if (wUCounter == 5) {
+                                System.out.println(">Your weapon is max level!");
+                            }
+                            if (gold >= weaponUpgrade) {
+                                cStrength = cStrength + 2;
+                                gold = gold - weaponUpgrade;
+                                weaponUpgrade = weaponUpgrade + 50;
+                                wUCounter++;
+                                System.out.printf(">Your strength has risen from %d to %d\n", cStrength - 2, cStrength);
+                                System.out.printf(">Weapon level upgraded to level %d", wUCounter);
+                            } else {
+                                System.out.println(">You do not have enough gold!");
+                            }
+                            break;
+                        case "2":
+                            if (aUCounter == 5) {
+                                System.out.println(">Your armor is max level!");
+                            } else if (gold >= armorUpgrade) {
+                                cHealth = cHealth + 3;
+                                gold = gold - armorUpgrade;
+                                armorUpgrade = armorUpgrade + 50;
+                                aUCounter++;
+                                System.out.printf(">Your max health has risen from %d to %d\n", cHealth - 3, cHealth);
+                                System.out.printf(">Armor level upgraded to level %d", aUCounter);
+                            } else {
+                                System.out.println(">You do not have enough gold!");
+                            }
+                            break;
+                        case "3":
+                            System.out.println("----------------------------------------------");
+                            inTown = true;
+                            inForge = false;
+                            continue GAME;
+                    }
+                }
+
+                //Shop Area
+                INSHOP:
+                while (inShop) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">I LIKE PENNIES! (He says you should stop standing around and buy something)");
+                    System.out.printf(">You have %d gold\n", gold);
+                    if (wUCounter != 5 && aUCounter != 5) {
+                        System.out.println("I LIKE PENNIES! (He says that he'll only sell you items if you prove you are worthy"
+                                + "of using them. Just go upgrade them at the Forge or something)");
+                    }
+
+                    switch (build) {
+                        case "1":
+                            if (wUCounter == 5 && wULevel == 0) {
+                                System.out.println("1. (150): Squire's Sword");
+                            }
+                            if (aUCounter == 5 && aULevel == 0) {
+                                System.out.println("2. (150): Squire's Armor");
+                            }
+                            if (wUCounter == 5 && wULevel == 1) {
+                                System.out.println("1. (300): Knight's Sword");
+                            }
+                            if (aUCounter == 5 && aULevel == 1) {
+                                System.out.println("2. (300): Knight's Armor");
+                            }
+                            if (wUCounter == 5 && wULevel == 2) {
+                                System.out.println("1. (450): King's Sword");
+                            }
+                            if (aUCounter == 5 && aULevel == 2) {
+                                System.out.println("2. (450): King's Armor");
+                            }
+                            if (wUCounter == 5 && wULevel == 3) {
+                                System.out.println("1. (600): Holy Meme Lance");
+                            }
+                            if (aUCounter == 5 && aULevel == 3) {
+                                System.out.println("2. (600): Armor of Memehood");
+                            }
+                            break;
+                        case "2":
+                            if (wUCounter == 5 && wULevel == 0) {
+                                System.out.println("1. (150): Rusty Flintlock");
+                            }
+                            if (aUCounter == 5 && aULevel == 0) {
+                                System.out.println("2. (150): Trenchcoat");
+                            }
+                            if (wUCounter == 5 && wULevel == 1) {
+                                System.out.println("1. (300): Old Musket");
+                            }
+                            if (aUCounter == 5 && aULevel == 1) {
+                                System.out.println("2. (300): Reinforced Trenchcoat");
+                            }
+                            if (wUCounter == 5 && wULevel == 2) {
+                                System.out.println("1. (450): Polished M1911");
+                            }
+                            if (aUCounter == 5 && aULevel == 2) {
+                                System.out.println("2. (450): Cowboy Hat");
+                            }
+                            if (wUCounter == 5 && wULevel == 3) {
+                                System.out.println("1. (600): Golden Western Revolver");
+                            }
+                            if (aUCounter == 5 && aULevel == 3) {
+                                System.out.println("2. (600): Boots of the West");
+                            }
+                            break;
+                        case "3":
+                            if (wUCounter == 5 && wULevel == 0) {
+                                System.out.println("1. (150): Two-Handed Greataxe");
+                            }
+                            if (aUCounter == 5 && aULevel == 0) {
+                                System.out.println("2. (150): Mercenary's Garbs");
+                            }
+                            if (wUCounter == 5 && wULevel == 1) {
+                                System.out.println("1. (300): Sharpened Greataxe");
+                            }
+                            if (aUCounter == 5 && aULevel == 1) {
+                                System.out.println("2. (300): Raider's Armor");
+                            }
+                            if (wUCounter == 5 && wULevel == 2) {
+                                System.out.println("1. (450): Orc's Greataxe");
+                            }
+                            if (aUCounter == 5 && aULevel == 2) {
+                                System.out.println("2. (450): Looted Captain's Armor");
+                            }
+                            if (wUCounter == 5 && wULevel == 3) {
+                                System.out.println("1. (600): Greataxe of Memesbane");
+                            }
+                            if (aUCounter == 5 && aULevel == 3) {
+                                System.out.println("2. (600): Bounty Hunter's Armor");
+                            }
+                            break;
+                        case "4":
+                            if (wUCounter == 5 && wULevel == 0) {
+                                System.out.println("1. (150): Heavy Wooden Club");
+                            }
+                            if (aUCounter == 5 && aULevel == 0) {
+                                System.out.println("2. (150): Old Robes");
+                            }
+                            if (wUCounter == 5 && wULevel == 1) {
+                                System.out.println("1. (300): Old Mace");
+                            }
+                            if (aUCounter == 5 && aULevel == 1) {
+                                System.out.println("2. (300): Priest's Garbs");
+                            }
+                            if (wUCounter == 5 && wULevel == 2) {
+                                System.out.println("1. (450): Spiked Battle Mace");
+                            }
+                            if (aUCounter == 5 && aULevel == 2) {
+                                System.out.println("2. (450): Pope's Robes");
+                            }
+                            if (wUCounter == 5 && wULevel == 3) {
+                                System.out.println("1. (600): Sacred Swinging Mace");
+                            }
+                            if (aUCounter == 5 && aULevel == 3) {
+                                System.out.println("2. (600): Blessed Robes of Memedom");
+                            }
+                            break;
+                        case "5":
+                            if (wUCounter == 5 && wULevel == 0) {
+                                System.out.println("1. (150): Fists");
+                            }
+                            if (aUCounter == 5 && aULevel == 0) {
+                                System.out.println("2. (150): T-Shirt from Kohl's");
+                            }
+                            if (wUCounter == 5 && wULevel == 1) {
+                                System.out.println("1. (300): Switch Blade");
+                            }
+                            if (aUCounter == 5 && aULevel == 1) {
+                                System.out.println("2. (300): Blue Jeans");
+                            }
+                            if (wUCounter == 5 && wULevel == 2) {
+                                System.out.println("1. (450): Baseball Bat");
+                            }
+                            if (aUCounter == 5 && aULevel == 2) {
+                                System.out.println("2. (450): Nike Jordan's");
+                            }
+                            if (wUCounter == 5 && wULevel == 3) {
+                                System.out.println("1. (600): Kanye West Album");
+                            }
+                            if (aUCounter == 5 && aULevel == 3) {
+                                System.out.println("2. (600): Cape of Memes");
+                            }
+                            break;
+                    }
+                    System.out.println("3. Return to Town");
+                    sInput = scan.nextLine();
+                    if (wUCounter == 5) {
+                        if (sInput.equals("1")) {
+                            if (gold < shopWeapon) {
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You don't have enough gold!");
+                            } else {
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You've upgraded your weapon! You can now purchase more upgrades from the Forge!");
+                                wUCounter = 0;
+                                wULevel++;
+                                weaponUpgrade -= 150;
+                                gold = gold - shopWeapon;
+                                shopWeapon += 150;
+                                cStrength += 3;
+                            }
+                        }
+                    }
+                    if (aUCounter == 5) {
+                        if (sInput.equals("2")) {
+                            if (gold < shopArmor) {
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You don't have enough gold!");
+                            } else {
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("");
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You've upgraded your armor! You can now purchase more upgrades from the Forge!");
+                                aUCounter = 0;
+                                aULevel++;
+                                armorUpgrade -= 150;
+                                gold = gold - shopArmor;
+                                shopArmor += 150;
+                                cHealth += 5;
+                            }
+                        }
+                    }
+                    if (sInput.equals("3")) {
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        inTown = true;
+                        inShop = false;
+                        continue GAME;
+                    }
+                }
+
+                //Training Area
+                INTRAINING:
+                while (inTraining) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">WELCOME TO THE TRAINING GROUNDS MAGGOT. NOW DROP DOWN AND GIVE ME THIRTY-TWO FRESH MEMES!");
+                    System.out.printf("You have %d gold\n", gold);
+                    System.out.println("Accuracy:");
+                    System.out.println("1: Train  for +5 Acc (25)");
+                    System.out.println("2: Train for +10 Acc (45)");
+                    System.out.println("3: Train for +15 Acc (70)");
+                    System.out.println("Speed:");
+                    System.out.println("4: Train for +1 Speed (25)");
+                    System.out.println("5: Train for +2 Speed (45)");
+                    System.out.println("6: Train for +3 Speed (70)");
+                    System.out.println("");
+                    System.out.println("7: Return to Town");
+                    sInput = scan.nextLine();
+
+                    switch (sInput) {
+                        case "1":
+                            if (cAcc == 100) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Your Acc is already at max!");
+                            } else if (gold < 25) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You do not have enough gold!");
+                            } else {
+                                gold = gold - 25;
+                                if (cAcc + 5 > 100) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your accuracy has increased from %d to 100!\n", cAcc);
+                                    cAcc = 100;
+                                } else {
+                                    cAcc = cAcc + 5;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your accuracy has increased from %d to %d!\n", cAcc - 5, cAcc);
+                                }
+                            }
+                            break;
+                        case "2":
+                            if (cAcc == 100) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Your Acc is already at max!");
+                            } else if (gold < 45) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You do not have enough gold!");
+                            } else {
+                                gold = gold - 45;
+                                if (cAcc + 10 > 100) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your accuracy has increased from %d to 100!\n", cAcc);
+                                    cAcc = 100;
+                                } else {
+                                    cAcc = cAcc + 10;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your accuracy has increased from %d to %d!\n", cAcc - 10, cAcc);
+                                }
+                            }
+                            break;
+                        case "3":
+                            if (cAcc == 100) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Your Acc is already at max!");
+                            } else if (gold < 70) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You do not have enough gold!");
+                            } else {
+                                gold = gold - 70;
+                                if (cAcc + 15 > 100) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your accuracy has increased from %d to 100!\n", cAcc);
+                                    cAcc = 100;
+                                } else {
+                                    cAcc = cAcc + 15;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your accuracy has increased from %d to %d!\n", cAcc - 15, cAcc);
+                                }
+                            }
+                            break;
+                        case "4":
+                            if (cSpeed == 32) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Your Speed is already at max!");
+                            } else if (gold < 25) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You do not have enough gold!");
+                            } else {
+                                gold = gold - 25;
+                                cSpeed = cSpeed + 1;
+                                System.out.println("----------------------------------------------");
+                                System.out.printf(">Your speed has increased from %d to %d!\n", cSpeed - 1, cSpeed);
+                            }
+                            break;
+                        case "5":
+                            if (cSpeed == 32) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Your Speed is already at max!");
+                            } else if (gold < 45) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You do not have enough gold!");
+                            } else {
+                                gold = gold - 45;
+                                if (cSpeed + 2 > 100) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your speed has increased from %d to 32!\n", cSpeed);
+                                    cSpeed = 100;
+                                } else {
+                                    cSpeed = cSpeed + 2;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your speed has increased from %d to %d!\n", cSpeed - 2, cSpeed);
+                                }
+                            }
+                            break;
+                        case "6":
+                            if (cSpeed == 32) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Your Speed is already at max!");
+                            } else if (gold < 70) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You do not have enough gold!");
+                            } else {
+                                gold = gold - 70;
+                                if (cSpeed + 3 > 100) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your speed has increased from %d to 32!\n", cSpeed);
+                                    cSpeed = 100;
+                                } else {
+                                    cSpeed = cSpeed + 3;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf(">Your speed has increased from %d to %d!\n", cSpeed - 3, cSpeed);
+                                }
+                            }
+                            break;
+                        case "7":
+                            System.out.println("----------------------------------------------");
+                            inTown = true;
+                            inTraining = false;
+                            continue GAME;
+                    }
+                }
+
+                //Fountain of Meme Culture Area
+                INFMC:
+                while (inFMC) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Come child, take a dip into the fountain...you won't regret it...");
+                    System.out.printf(">Your Acc is %d\n", cAcc);
+                    System.out.println("1: Restore max Health in exchange for 5% Acc?");
+                    System.out.println("2: Return to Town");
+                    sInput = scan.nextLine();
+
+                    switch (sInput) {
+                        case "1":
+                            if (cAcc < 5) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">You do not have enough Accuracy to trade! (idiot)");
+                            } else if (cHP == cHealth) {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">My dear child, you are already caught up on recent memes...you need not the fountain...");
+                            } else {
+                                cAcc = cAcc - 5;
+                                cHP = cHealth;
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Thank you for such a gracious donation my child...your meme culture has been restored...");
+                            }
+                            break;
+                        case "2":
+                            System.out.println("----------------------------------------------");
+                            inTown = true;
+                            inFMC = false;
+                            continue GAME;
+                    }
+                }
+
+                //Save Lady
+                SAVELADY:
+                while (inSaveLady) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Oooooh, those are some nice memes you have there can I have yes");
+                    System.out.println("please I want please give save saVe SavE SAvE SAVE! Can I save your");
+                    System.out.println("memes? Oh please I want them LET ME SAVE YOUR MEMES.");
+                    System.out.println("1: Save Game");
+                    System.out.println("2: Leave This Crazy Woman and Go Back to Town");
+                    sInput = scan.nextLine();
+
+                    switch (sInput) {
+                        case "1":
+                        try {
+                            BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                            bw.write("" + cStrength);
+                            bw.newLine();
+                            bw.write("" + cSpeed);
+                            bw.newLine();
+                            bw.write("" + cAcc);
+                            bw.newLine();
+                            bw.write("" + cHP);
+                            bw.newLine();
+                            bw.write("" + gold);
+                            bw.newLine();
+                            bw.write("" + weaponUpgrade);
+                            bw.newLine();
+                            bw.write("" + armorUpgrade);
+                            bw.newLine();
+                            bw.write("" + wUCounter);
+                            bw.newLine();
+                            bw.write("" + aUCounter);
+                            bw.newLine();
+                            bw.write("" + wULevel);
+                            bw.newLine();
+                            bw.write("" + aULevel);
+                            bw.newLine();
+                            bw.write("" + shopWeapon);
+                            bw.newLine();
+                            bw.write("" + shopArmor);
+                            bw.newLine();
+                            bw.write("" + completeEasy);
+                            bw.newLine();
+                            bw.write("" + completeMedium);
+                            bw.newLine();
+                            bw.write("" + completeHard);
+                            bw.newLine();
+                            bw.write("" + completeDank);
+                            bw.newLine();
+                            bw.write("" + build);
+
+                            bw.close();
+                        } catch (Exception e) {
+
+                        }
+                        System.out.println("----------------------------------------------");
+                        System.out.println(">OH THANK YOU THESE ARE SUCH LOVELY MEMES YOU HAVE AJDLFJALKSJDFJASLFJ");
+                        break;
+                        case "2":
+                            inTown = true;
+                            inSaveLady = false;
+                            continue GAME;
+                        default:
+                            System.out.println("----------------------------------------------");
+                            System.out.println(">What are you doin' stranger you wanna see my memes? you wanna");
+                            System.out.println("see my memes oh yes come look I have so many saved");
+                            break;
+                    }
+                }
+
+                //Dungeon Room Choice Area
+                DUNGEONROOMCHOICE:
+                while (dungeonRoomChoice) {
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Welcome to the dungeon adventurer. Choose a floor to begin your journey...");
+                    System.out.printf("1: Catacombs (Easy/%s)\n", completeEasy);
+                    System.out.printf("2: Library of Memes (Medium/%s)\n", completeMedium);
+                    System.out.printf("3: The Dank Web (Hard/%s)\n", completeHard);
+                    System.out.printf("4: Dankest of Dungeons (%s)\n", completeDank);
+                    System.out.printf("5: Run away like a pussy\n");
+                    sInput = scan.nextLine();
+
+                    switch (sInput) {
+                        case "1":
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("----------------------------------------------");
+                            System.out.println("You enter the easiest of the dungeons...pussy");
+                            easyDungeon = true;
+                            dungeonRoomChoice = false;
+                            break;
+                        case "2":
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("----------------------------------------------");
+                            System.out.println("Are you cultured enough for the Library?...");
+                            mediumDungeon = true;
+                            dungeonRoomChoice = false;
+                            break;
+                        case "3":
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("----------------------------------------------");
+                            System.out.println("The wide web has not prepared you for this...");
+                            hardDungeon = true;
+                            dungeonRoomChoice = false;
+                            break;
+                        case "4":
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("");
+                            System.out.println("----------------------------------------------");
+                            System.out.println("Only the most cultured survive...good luck, you will need it...");
+                            dankestDungeon = true;
+                            dungeonRoomChoice = false;
+                            break;
+                        case "5":
+                            System.out.println("----------------------------------------------");
+                            inTown = true;
+                            dungeonRoomChoice = false;
+                            continue GAME;
+                    }
+                }
+
+                //Random Generator
+                Random generator = new Random(System.currentTimeMillis());
+                int rand;
+                int roomCounter = 1;
+
+                //Easy Dungeon Area
+                EASY:
+                while (easyDungeon) {
+                    fight = true;
+                    rand = generator.nextInt(3);
+                    String currentMonster = "";
+                    int enemyH, enemyS, enemyAcc, enemySp;
+                    if (roomCounter >= 9) {
+                        currentMonster = easyBoss;
+                        enemyH = easyBossH;
+                        enemyS = easyBossS;
+                        enemyAcc = easyBossAcc;
+                        enemySp = easyBossSp;
+                    } else {
+                        currentMonster = easy[rand];
+                        enemyH = easyH;
+                        enemyS = easyS;
+                        enemyAcc = easyAcc;
+                        enemySp = easySp;
+                    }
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.printf(">Room %d/9\n", roomCounter);
+                    System.out.printf(">You have encountered a %s!\n", currentMonster);
+                    while (fight) {
+                        if (cSpeed < enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">The enemy was faster than you and got the upper hand!");
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.printf(">You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println(">You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println(">The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println(">Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    easyDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        System.out.println("----------------------------------------------");
+                        System.out.printf(">%s's Health: %d\n", currentMonster, enemyH);
+                        System.out.printf(">Your Health: %s\n", cHP);
+                        System.out.println("What would you like to do?");
+                        System.out.printf("1: Basic Attack (%d percent chance of hitting)\n", cAcc);
+                        System.out.printf("2: Heavy Attack (%d percent chance of hitting)\n", cAcc - 15);
+
+                        switch (build) {
+                            case "1":
+                                System.out.printf("3: Holy Smite (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "2":
+                                System.out.printf("3: Quick Shot (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "3":
+                                System.out.printf("3: Skull Crack (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "4":
+                                System.out.printf("3: Quick Heal (%d percent chance of casting)\n", cAcc - 7);
+                                break;
+                            case "5":
+                                System.out.printf("3: Fuck You Kid (%d percent chance of casting)\n", cAcc);
+                                break;
+                        }
+
+                        System.out.println("4: Run away (like a baby back bitch)");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "2":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc - 15) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "3":
+                                rand = generator.nextInt(100);
+                                if (build.equals("4")) {
+                                    if (rand <= cAcc - 3) {
+                                        dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 3;
+                                        rand = generator.nextInt(10);
+                                        if (rand == 0) {
+                                            System.out.println("----------------------------------------------");
+                                            System.out.println("You hit a crit!");
+                                            dmg = dmg * 2;
+                                        }
+                                        cHP = cHP + dmg;
+                                        System.out.println("----------------------------------------------");
+                                        System.out.printf("You healed yourself for %d health!!\n", dmg);
+                                    } else {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("Your spell fizzled!");
+                                    }
+                                } else if (rand <= cAcc - 7) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "4":
+                                rand = generator.nextInt(2);
+                                if (rand == 0) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You failed to run away??? HOW?! It's running!");
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You pussied out and ran away like a baby back bitch. Congrats.");
+                                    fight = false;
+                                    inTown = true;
+                                    easyDungeon = false;
+                                    continue GAME;
+                                }
+                                break;
+                            default:
+                                System.out.println("----------------------------------------------");
+                                System.out.println("You must have mis-typed or some shit because you just stood there like an idiot!");
+                        }
+                        if (cSpeed >= enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println("Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    easyDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        if (enemyH <= 0) {
+                            fight = false;
+                        }
+                    }
+                    if (roomCounter < 9) {
+                        rand = generator.nextInt(75) + 25;
+                        gold += rand;
+                        roomCounter++;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.printf("+%d gold\n", rand);
+                        System.out.println("The battle is over. Would you like to continue deeper?");
+                        System.out.println("1: Continue to the next room");
+                        System.out.println("2: Return to Town");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                //Continue
+                                break;
+                            case "2":
+                                inTown = true;
+                                easyDungeon = false;
+                                continue GAME;
+                        }
+                    } else {
+                        gold += 500;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.println("+500 gold");
+                        System.out.println(">You have completed the first floor!");
+                        System.out.println(">Press enter to return to town...");
+                        sInput = scan.nextLine();
+                        inTown = true;
+                        easyDungeon = false;
+                        completeEasy = "Complete";
+                        continue GAME;
+                    }
+                }
+
+                //Medium Dungeon Area
+                MEDIUM:
+                while (mediumDungeon) {
+                    fight = true;
+                    rand = generator.nextInt(3);
+                    String currentMonster = "";
+                    int enemyH, enemyS, enemyAcc, enemySp;
+                    if (roomCounter >= 9) {
+                        currentMonster = mediumBoss;
+                        enemyH = mediumBossH;
+                        enemyS = mediumBossS;
+                        enemyAcc = mediumBossAcc;
+                        enemySp = mediumBossSp;
+                    } else {
+                        currentMonster = medium[rand];
+                        enemyH = mediumH;
+                        enemyS = mediumS;
+                        enemyAcc = mediumAcc;
+                        enemySp = mediumSp;
+                    }
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.printf(">Room %d/9\n", roomCounter);
+                    System.out.printf(">You have encountered a %s!\n", currentMonster);
+                    while (fight) {
+                        if (cSpeed < enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">The enemy was faster than you and got the upper hand!");
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.printf(">You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println(">You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println(">The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println(">Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    mediumDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        System.out.println("----------------------------------------------");
+                        System.out.printf(">%s's Health: %d\n", currentMonster, enemyH);
+                        System.out.printf(">Your Health: %s\n", cHP);
+                        System.out.println("What would you like to do?");
+                        System.out.printf("1: Basic Attack (%d percent chance of hitting)\n", cAcc);
+                        System.out.printf("2: Heavy Attack (%d percent chance of hitting)\n", cAcc - 15);
+
+                        switch (build) {
+                            case "1":
+                                System.out.printf("3: Holy Smite (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "2":
+                                System.out.printf("3: Quick Shot (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "3":
+                                System.out.printf("3: Skull Crack (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "4":
+                                System.out.printf("3: Quick Heal (%d percent chance of casting)\n", cAcc - 7);
+                                break;
+                            case "5":
+                                System.out.printf("3: Fuck You Kid (%d percent chance of casting)\n", cAcc);
+                                break;
+                        }
+
+                        System.out.println("4: Run away (like a baby back bitch)");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "2":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc - 15) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "3":
+                                rand = generator.nextInt(100);
+                                if (build.equals("4")) {
+                                    if (rand <= cAcc - 3) {
+                                        dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                        rand = generator.nextInt(10);
+                                        if (rand == 0) {
+                                            System.out.println("----------------------------------------------");
+                                            System.out.println("You hit a crit!");
+                                            dmg = dmg * 2;
+                                        }
+                                        cHP = cHP + dmg;
+                                        System.out.println("----------------------------------------------");
+                                        System.out.printf("You healed yourself for %d health!!\n", dmg);
+                                    } else {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("Your spell fizzled!");
+                                    }
+                                } else if (rand <= cAcc - 7) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "4":
+                                rand = generator.nextInt(2);
+                                if (rand == 0) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You failed to run away??? HOW?! It's running!");
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You pussied out and ran away like a baby back bitch. Congrats.");
+                                    fight = false;
+                                    inTown = true;
+                                    mediumDungeon = false;
+                                    continue GAME;
+                                }
+                                break;
+                            default:
+                                System.out.println("----------------------------------------------");
+                                System.out.println("You must have mis-typed or some shit because you just stood there like an idiot!");
+                        }
+                        if (cSpeed >= enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println("Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    mediumDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        if (enemyH <= 0) {
+                            fight = false;
+                        }
+                    }
+                    if (roomCounter < 9) {
+                        rand = generator.nextInt(125) + 50;
+                        gold += rand;
+                        roomCounter++;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.printf("+%d gold\n", rand);
+                        System.out.println("The battle is over. Would you like to continue deeper?");
+                        System.out.println("1: Continue to the next room");
+                        System.out.println("2: Return to Town");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                //Continue
+                                break;
+                            case "2":
+                                inTown = true;
+                                mediumDungeon = false;
+                                continue GAME;
+                        }
+                    } else {
+                        gold += 1000;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.println("+1000 gold");
+                        System.out.println(">You have completed the second floor!");
+                        System.out.println(">Press enter to return to town...");
+                        sInput = scan.nextLine();
+                        inTown = true;
+                        mediumDungeon = false;
+                        completeMedium = "Complete";
+                        continue GAME;
+                    }
+                }
+
+                //Hard Dungeon Area
+                HARD:
+                while (hardDungeon) {
+                    fight = true;
+                    rand = generator.nextInt(3);
+                    String currentMonster = "";
+                    int enemyH, enemyS, enemyAcc, enemySp;
+                    if (roomCounter >= 9) {
+                        currentMonster = hardBoss;
+                        enemyH = hardBossH;
+                        enemyS = hardBossS;
+                        enemyAcc = hardBossAcc;
+                        enemySp = hardBossSp;
+                    } else {
+                        currentMonster = hard[rand];
+                        enemyH = hardH;
+                        enemyS = hardS;
+                        enemyAcc = hardAcc;
+                        enemySp = hardSp;
+                    }
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.printf(">Room %d/9\n", roomCounter);
+                    System.out.printf(">You have encountered a %s!\n", currentMonster);
+                    while (fight) {
+                        if (cSpeed < enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">The enemy was faster than you and got the upper hand!");
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.printf(">You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println(">You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println(">The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println(">Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    hardDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        System.out.println("----------------------------------------------");
+                        System.out.printf(">%s's Health: %d\n", currentMonster, enemyH);
+                        System.out.printf(">Your Health: %s\n", cHP);
+                        System.out.println("What would you like to do?");
+                        System.out.printf("1: Basic Attack (%d percent chance of hitting)\n", cAcc);
+                        System.out.printf("2: Heavy Attack (%d percent chance of hitting)\n", cAcc - 15);
+
+                        switch (build) {
+                            case "1":
+                                System.out.printf("3: Holy Smite (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "2":
+                                System.out.printf("3: Quick Shot (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "3":
+                                System.out.printf("3: Skull Crack (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "4":
+                                System.out.printf("3: Quick Heal (%d percent chance of casting)\n", cAcc - 7);
+                                break;
+                            case "5":
+                                System.out.printf("3: Fuck You Kid (%d percent chance of casting)\n", cAcc);
+                                break;
+                        }
+
+                        System.out.println("4: Run away (like a baby back bitch)");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "2":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc - 15) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "3":
+                                rand = generator.nextInt(100);
+                                if (build.equals("4")) {
+                                    if (rand <= cAcc - 3) {
+                                        dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                        rand = generator.nextInt(10);
+                                        if (rand == 0) {
+                                            System.out.println("----------------------------------------------");
+                                            System.out.println("You hit a crit!");
+                                            dmg = dmg * 2;
+                                        }
+                                        cHP = cHP + dmg;
+                                        System.out.println("----------------------------------------------");
+                                        System.out.printf("You healed yourself for %d health!!\n", dmg);
+                                    } else {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("Your spell fizzled!");
+                                    }
+                                } else if (rand <= cAcc - 7) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "4":
+                                rand = generator.nextInt(2);
+                                if (rand == 0) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You failed to run away??? HOW?! It's running!");
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You pussied out and ran away like a baby back bitch. Congrats.");
+                                    fight = false;
+                                    inTown = true;
+                                    hardDungeon = false;
+                                    continue GAME;
+                                }
+                                break;
+                            default:
+                                System.out.println("----------------------------------------------");
+                                System.out.println("You must have mis-typed or some shit because you just stood there like an idiot!");
+                        }
+                        if (cSpeed >= enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println("Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    hardDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        if (enemyH <= 0) {
+                            fight = false;
+                        }
+                    }
+                    if (roomCounter < 9) {
+                        rand = generator.nextInt(200) + 75;
+                        gold += rand;
+                        roomCounter++;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.printf("+%d gold\n", rand);
+                        System.out.println("The battle is over. Would you like to continue deeper?");
+                        System.out.println("1: Continue to the next room");
+                        System.out.println("2: Return to Town");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                //Continue
+                                break;
+                            case "2":
+                                inTown = true;
+                                hardDungeon = false;
+                                continue GAME;
+                        }
+                    } else {
+                        gold += 1500;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.println("+1500 gold");
+                        System.out.println(">You have completed the third floor!");
+                        System.out.println(">Press enter to return to town...");
+                        sInput = scan.nextLine();
+                        inTown = true;
+                        hardDungeon = false;
+                        completeHard = "Complete";
+                        continue GAME;
+                    }
+                }
+
+                //Dankest Dungeon Area
+                DANK:
+                while (dankestDungeon) {
+                    fight = true;
+                    rand = generator.nextInt(3);
+                    String currentMonster = "";
+                    int enemyH, enemyS, enemyAcc, enemySp;
+                    if (roomCounter >= 9) {
+                        currentMonster = dankBoss;
+                        enemyH = dankBossH;
+                        enemyS = dankBossS;
+                        enemyAcc = dankBossAcc;
+                        enemySp = dankBossSp;
+                    } else {
+                        currentMonster = dank[rand];
+                        enemyH = dankH;
+                        enemyS = dankS;
+                        enemyAcc = dankAcc;
+                        enemySp = dankSp;
+                    }
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.printf(">Room %d/9\n", roomCounter);
+                    System.out.printf(">You have encountered a %s!\n", currentMonster);
+                    while (fight) {
+                        if (cSpeed < enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">The enemy was faster than you and got the upper hand!");
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.printf(">You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println(">You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println(">The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println(">Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    dankestDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        System.out.println("----------------------------------------------");
+                        System.out.printf(">%s's Health: %d\n", currentMonster, enemyH);
+                        System.out.printf(">Your Health: %s\n", cHP);
+                        System.out.println("What would you like to do?");
+                        System.out.printf("1: Basic Attack (%d percent chance of hitting)\n", cAcc);
+                        System.out.printf("2: Heavy Attack (%d percent chance of hitting)\n", cAcc - 15);
+
+                        switch (build) {
+                            case "1":
+                                System.out.printf("3: Holy Smite (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "2":
+                                System.out.printf("3: Quick Shot (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "3":
+                                System.out.printf("3: Skull Crack (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "4":
+                                System.out.printf("3: Quick Heal (%d percent chance of casting)\n", cAcc - 7);
+                                break;
+                            case "5":
+                                System.out.printf("3: Fuck You Kid (%d percent chance of casting)\n", cAcc);
+                                break;
+                        }
+
+                        System.out.println("4: Run away (like a baby back bitch)");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "2":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc - 15) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "3":
+                                rand = generator.nextInt(100);
+                                if (build.equals("4")) {
+                                    if (rand <= cAcc - 3) {
+                                        dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                        rand = generator.nextInt(10);
+                                        if (rand == 0) {
+                                            System.out.println("----------------------------------------------");
+                                            System.out.println("You hit a crit!");
+                                            dmg = dmg * 2;
+                                        }
+                                        cHP = cHP + dmg;
+                                        System.out.println("----------------------------------------------");
+                                        System.out.printf("You healed yourself for %d health!!\n", dmg);
+                                    } else {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("Your spell fizzled!");
+                                    }
+                                } else if (rand <= cAcc - 7) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "4":
+                                rand = generator.nextInt(2);
+                                if (rand == 0) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You failed to run away??? HOW?! It's running!");
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You pussied out and ran away like a baby back bitch. Congrats.");
+                                    fight = false;
+                                    inTown = true;
+                                    dankestDungeon = false;
+                                    continue GAME;
+                                }
+                                break;
+                            default:
+                                System.out.println("----------------------------------------------");
+                                System.out.println("You must have mis-typed or some shit because you just stood there like an idiot!");
+                        }
+                        if (cSpeed >= enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println("Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    dankestDungeon = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        if (enemyH <= 0) {
+                            fight = false;
+                        }
+                    }
+                    if (roomCounter < 9) {
+                        rand = generator.nextInt(250) + 100;
+                        gold += rand;
+                        roomCounter++;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.printf("+%d gold\n", rand);
+                        System.out.println("The battle is over. Would you like to continue deeper?");
+                        System.out.println("1: Continue to the next room");
+                        System.out.println("2: Return to Town");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                //Continue
+                                break;
+                            case "2":
+                                inTown = true;
+                                dankestDungeon = false;
+                                continue GAME;
+                        }
+                    } else {
+                        gold += 1000000;
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("");
+                        System.out.println("----------------------------------------------");
+                        System.out.println("+1,000,000 gold");
+                        System.out.println(">You have completed the fourth floor!");
+                        System.out.println(">Press enter to return to town...");
+                        sInput = scan.nextLine();
+                        endGame = true;
+                        dankestDungeon = false;
+                        completeDank = "Complete";
+                        continue GAME;
+                    }
+                }
+
+                ENDGAME:
+                while (endGame) {
+                    fight = true;
+                    String currentMonster = "Lord Dankness the III";
+                    int enemyS = 46, enemySp = 32, enemyH = 104, enemyAcc = 69;
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Room *&^$%^%");
+                    System.out.printf(">SURPRISE BITCH! You have encountered %s!\n", currentMonster);
+                    while (fight) {
+                        if (cSpeed < enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                System.out.println("----------------------------------------------");
+                                System.out.println(">Lord Dankness the III was faster than you and got the upper hand!");
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.printf(">You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println(">You lucky shit, he missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println(">The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println(">Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    endGame = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                        System.out.println("----------------------------------------------");
+                        System.out.printf(">%s's Health: %d\n", currentMonster, enemyH);
+                        System.out.printf(">Your Health: %s\n", cHP);
+                        System.out.println("What would you like to do?");
+                        System.out.printf("1: Basic Attack (%d percent chance of hitting)\n", cAcc);
+                        System.out.printf("2: Heavy Attack (%d percent chance of hitting)\n", cAcc - 15);
+
+                        switch (build) {
+                            case "1":
+                                System.out.printf("3: Holy Smite (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "2":
+                                System.out.printf("3: Quick Shot (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "3":
+                                System.out.printf("3: Skull Crack (%d percent chance of hitting)\n", cAcc - 7);
+                                break;
+                            case "4":
+                                System.out.printf("3: Quick Heal (%d percent chance of casting)\n", cAcc - 7);
+                                break;
+                            case "5":
+                                System.out.printf("3: Fuck You Kid (%d percent chance of casting)\n", cAcc);
+                                break;
+                        }
+
+                        System.out.println("4: Run away (like a baby back bitch)");
+                        sInput = scan.nextLine();
+
+                        switch (sInput) {
+                            case "1":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "2":
+                                rand = generator.nextInt(100);
+                                if (rand <= cAcc - 15) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "3":
+                                rand = generator.nextInt(100);
+                                if (build.equals("4")) {
+                                    if (rand <= cAcc - 3) {
+                                        dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                        rand = generator.nextInt(10);
+                                        if (rand == 0) {
+                                            System.out.println("----------------------------------------------");
+                                            System.out.println("You hit a crit!");
+                                            dmg = dmg * 2;
+                                        }
+                                        cHP = cHP + dmg;
+                                        System.out.println("----------------------------------------------");
+                                        System.out.printf("You healed yourself for %d health!!\n", dmg);
+                                    } else {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("Your spell fizzled!");
+                                    }
+                                } else if (rand <= cAcc - 7) {
+                                    dmg = generator.nextInt(cStrength / 2) + cStrength / 2 + 5;
+                                    rand = generator.nextInt(10);
+                                    if (rand == 0) {
+                                        System.out.println("----------------------------------------------");
+                                        System.out.println("You hit a crit!");
+                                        dmg = dmg * 2;
+                                    }
+                                    enemyH = enemyH - dmg;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You hit the enemy for %d damage!\n", dmg);
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("Your attack missed!");
+                                }
+                                break;
+                            case "4":
+                                rand = generator.nextInt(2);
+                                if (rand == 0) {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You failed to run away??? HOW?! It's running!");
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You pussied out and ran away like a baby back bitch. Congrats.");
+                                    fight = false;
+                                    inTown = true;
+                                    endGame = false;
+                                    continue GAME;
+                                }
+                                break;
+                            default:
+                                System.out.println("----------------------------------------------");
+                                System.out.println("You must have mis-typed or some shit because you just stood there like an idiot!");
+                        }
+                        if (cSpeed >= enemySp) {
+                            if (enemyH <= 0) {
+                                fight = false;
+                            } else {
+                                rand = generator.nextInt(100);
+                                if (rand <= enemyAcc) {
+                                    rand = generator.nextInt(enemyS) + 1;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.printf("You were hit for %d damage!\n", rand);
+                                    cHP = cHP - rand;
+                                } else {
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("You lucky shit, they missed!");
+                                }
+                                if (cHP <= 0) {
+                                    fight = false;
+                                    System.out.println("----------------------------------------------");
+                                    System.out.println("The hero falls to the floor, unable to overpower the dank memes presented to him.");
+                                    System.out.println("Press enter to end the journey...");
+                                    sInput = scan.nextLine();
+
+                                    try {
+                                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+                                        bw.newLine();
+                                        bw.write("");
+
+                                        bw.close();
+                                    } catch (Exception e) {
+
+                                    }
+
+                                    endGame = false;
+                                    game = false;
+                                    mainMenu = true;
+                                    continue RUNNING;
+                                }
+                            }
+                        }
+                    }
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("");
+                    System.out.println("----------------------------------------------");
+                    System.out.println(">Lord Dankness the III falls to the floor, the meme culture draining from his body.");
+                    System.out.println(">You exit the dungeon a new memer. Full of motivation to generate a new era of meme culture.");
+                    System.out.println(">An era that no one would forget. Ever.");
+                    System.out.println(">Press enter to end the journey...");
+                    sInput = scan.nextLine();
+                    System.out.println("Hm, I guess you weren't a little bitch after all. Or a baby back bitch. Or a pussy. Or anything else"
+                            + " I called you along the way. Good job!");
+                    System.out.println("(Thanks again for playing my game)");
+
+                    try {
+                        BufferedWriter bw = new BufferedWriter(new FileWriter("save.txt"));
+
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+                        bw.newLine();
+                        bw.write("");
+
+                        bw.close();
+                    } catch (Exception e) {
+
+                    }
+
+                    endGame = false;
+                    game = false;
+                    mainMenu = true;
+                    continue RUNNING;
+                }
+            }
+        }
+
+    }
+}
